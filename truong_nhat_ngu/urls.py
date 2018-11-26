@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
-from du_lieu_hoc_vien.views import home
+from .views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    url(r'^$', home, name='home')
+    url(r'^$', home, name='home'),
+    path('data-entry/', include('du_lieu_hoc_vien.urls')),
 ]

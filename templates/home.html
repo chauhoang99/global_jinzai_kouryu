@@ -4,21 +4,35 @@
 {% block content %}
 <div class="jumbotron">
     <h2>Vui lòng chọn mục bạn muốn sử dụng:</h2>
-    <table>
-        <th></th>
-        <th></th>
-        <th></th>
+    <table class="table">
         <tr>
             <td>
-                <button>Nhập dữ liệu</button>
+                <a role="button" class="btn btn-primary glyphicon glyphicon-plus" href="/data-entry">
+                    <span><br>Nhập dữ liệu</span>
+                </a>
             </td>
             <td>
-                <button>Tìm kiếm dữ liệu</button>
+                <a role="button" class="btn btn-primary glyphicon glyphicon-search" id="developing-search">
+                    <span><br>Tìm kiếm dữ liệu</span>
+                </a>
             </td>
             <td>
-                <button>Xem thống kê, báo cáo</button>
+                <a role="button" class="btn btn-primary glyphicon glyphicon-stats" id="developing-dashboard">
+                    <span><br>Xem thống kê, báo cáo</span>
+                </a>
             </td>
         </tr>
     </table>
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        $("#developing-search").click(function (){
+            alert("Đang phát triển, vui lòng thử lại sau.")
+        });
+        $("#developing-dashboard").click(function (){
+            alert("Đang phát triển, vui lòng thử lại sau.")
+        });
+    </script>
+{% endblock extra_js %}

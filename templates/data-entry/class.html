@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h3>Nhập dữ liệu về lớp học</h3>
+        <form class="data-entry-class" enctype="multipart/form-data" method="post" action="/data-entry/save?data=class">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+                <th>Tên lớp học</th>
+                <th>Từ ngày</th>
+                <th>Đến ngày</th>
+                <th>Trình độ</th>
+            </thead>
+            <tbody id="input-here">
+            </tbody>
+        </table>
+        <div class="row"><button type="button" class="glyphicon glyphicon-plus" id="btn-add-row">Thêm dòng</button></div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Lưu lại</button>
+            <button type="button" class="btn btn-primary" id="btn-reset">Xóa</button>
+        </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        $(document).ready(
+            function () {
+                $('#input-here').append($('<tr>')
+                    .append($('<td>')
+                        .append($('<input id="class_name" type="text">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<input id="from_date" type="date">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<input id="to_date" type="date">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<input id="level" type="text">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<button class="glyphicon glyphicon-minus" type="button" onClick="$(this).closest(\'tr\').remove();">'))
+                    )
+                );
+            });
+
+        $('#btn-add-row').click(
+            function () {
+                $('#input-here').append($('<tr>')
+                    .append($('<td>')
+                        .append($('<input id="class_name" type="text">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<input id="from_date" type="date">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<input id="to_date" type="date">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<input id="level" type="text">')
+                        )
+                    )
+                    .append($('<td>')
+                        .append($('<button class="glyphicon glyphicon-minus" type="button" onClick="$(this).closest(\'tr\').remove();">'))
+                    )
+                );
+            });
+        $('#btn-reset').click(
+            function () {
+                $('#input-here').empty();
+            }
+        )
+    </script>
+{% endblock extra_js %}
