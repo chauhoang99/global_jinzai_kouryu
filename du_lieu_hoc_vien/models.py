@@ -8,9 +8,9 @@ class ClassInfo(models.Model):
     to_date = models.DateTimeField(null=True)
     level = models.CharField(max_length=20, null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='class_input_by')
+    input_by = models.ForeignKey(to=User, related_name='class_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='class_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='class_modifiled_by', on_delete=models.CASCADE)
 
 
 class Employer(models.Model):
@@ -18,9 +18,9 @@ class Employer(models.Model):
     address = models.TextField(null=True)
     country = models.CharField(max_length=30, null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='employer_input_by')
+    input_by = models.ForeignKey(to=User, related_name='employer_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='employer_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='employer_modifiled_by', on_delete=models.CASCADE)
 
 
 class Jobs(models.Model):
@@ -31,9 +31,9 @@ class Jobs(models.Model):
     japanese_level = models.CharField(max_length=20, null=True)
     other_requirements = models.TextField(null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='job_input_by')
+    input_by = models.ForeignKey(to=User, related_name='job_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='job_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='job_modifiled_by', on_delete=models.CASCADE)
 
 
 class Teacher(models.Model):
@@ -42,9 +42,9 @@ class Teacher(models.Model):
     citizen_id = models.CharField(max_length=20, null=True)
     date_of_birth = models.DateField(null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='teacher_input_by')
+    input_by = models.ForeignKey(to=User, related_name='teacher_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='teacher_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='teacher_modifiled_by', on_delete=models.CASCADE)
 
 
 class Student(models.Model):
@@ -54,9 +54,9 @@ class Student(models.Model):
     date_of_birth = models.DateField(null=True)
     current_japanese_level = models.CharField(max_length=20, null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='student_input_by')
+    input_by = models.ForeignKey(to=User, related_name='student_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='student_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='student_modifiled_by', on_delete=models.CASCADE)
 
 
 class StudentDegree(models.Model):
@@ -65,9 +65,9 @@ class StudentDegree(models.Model):
     given_by = models.CharField(max_length=50, null=True)
     field_of_study = models.CharField(max_length=100, null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='degree_input_by')
+    input_by = models.ForeignKey(to=User, related_name='degree_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='degree_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='degree_modifiled_by', on_delete=models.CASCADE)
 
 
 class StudyRecord(models.Model):
@@ -77,9 +77,9 @@ class StudyRecord(models.Model):
     teacher_comment = models.TextField(null=True)
     notes = models.TextField(null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='study_record_input_by')
+    input_by = models.ForeignKey(to=User, related_name='study_record_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='study_record_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='study_record_modifiled_by', on_delete=models.CASCADE)
 
 
 class WorkRecord(models.Model):
@@ -89,6 +89,6 @@ class WorkRecord(models.Model):
     employer_comment = models.TextField(null=True)
     other_notes = models.TextField(null=True)
     input_date = models.DateTimeField(auto_now=True)
-    input_by = models.ManyToManyField(to=User, related_name='work_record_input_by')
+    input_by = models.ForeignKey(to=User, related_name='work_record_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)
-    modified_by = models.ManyToManyField(to=User, related_name='work_record_modifiled_by')
+    modified_by = models.ForeignKey(to=User, related_name='work_record_modifiled_by', on_delete=models.CASCADE)

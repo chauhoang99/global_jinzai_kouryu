@@ -3,9 +3,9 @@
 
 {% block content %}
     <div class="jumbotron">
+{#        <form method="post">#}
+{#        {% csrf_token %}#}
         <h3>Nhập dữ liệu về lớp học</h3>
-        <form class="data-entry-class" enctype="multipart/form-data" method="post" action="/data-entry/save?data=class">
-        {% csrf_token %}
         <table class="table">
             <thead>
                 <th>Tên lớp học</th>
@@ -18,68 +18,153 @@
         </table>
         <div class="row"><button type="button" class="glyphicon glyphicon-plus" id="btn-add-row">Thêm dòng</button></div>
         <div class="row">
-            <button type="submit" class="btn btn-primary">Lưu lại</button>
+            <button type="button" class="btn btn-primary" id="btn-submit">Lưu lại</button>
             <button type="button" class="btn btn-primary" id="btn-reset">Xóa</button>
         </div>
-        </form>
+{#        </form>#}
     </div>
 {% endblock content %}
 
 {% block extra_js %}
     <script type="text/javascript">
-        $(document).ready(
-            function () {
-                $('#input-here').append($('<tr>')
-                    .append($('<td>')
-                        .append($('<input id="class_name" type="text">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<input id="from_date" type="date">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<input id="to_date" type="date">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<input id="level" type="text">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<button class="glyphicon glyphicon-minus" type="button" onClick="$(this).closest(\'tr\').remove();">'))
-                    )
-                );
-            });
+    function getCookie(name) {
+          var cookieValue = null;
+          if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+               var cookie = jQuery.trim(cookies[i]);
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) == (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+             }
+          }
+      }
+     return cookieValue;
+    };
+    function addNewRow(){
+        $('#input-here').append($('<tr>')
+        .append($('<td>')
+            .append($('<input id="class_name" type="text">')
+            )
+        )
+        .append($('<td>')
+            .append($('<input id="from_date" type="date">')
+            )
+        )
+        .append($('<td>')
+            .append($('<input id="to_date" type="date">')
+            )
+        )
+        .append($('<td>')
+            .append($('<input id="level" type="text">')
+            )
+        )
+        .append($('<td>')
+            .append($('<button class="glyphicon glyphicon-minus" type="button" onClick="$(this).closest(\'tr\').remove();">'))
+        )
+    );
+    };
+        $(document).ready(addNewRow());
 
         $('#btn-add-row').click(
             function () {
-                $('#input-here').append($('<tr>')
-                    .append($('<td>')
-                        .append($('<input id="class_name" type="text">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<input id="from_date" type="date">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<input id="to_date" type="date">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<input id="level" type="text">')
-                        )
-                    )
-                    .append($('<td>')
-                        .append($('<button class="glyphicon glyphicon-minus" type="button" onClick="$(this).closest(\'tr\').remove();">'))
-                    )
-                );
+                addNewRow()
             });
+
         $('#btn-reset').click(
             function () {
                 $('#input-here').empty();
             }
-        )
+        );
+        $('#btn-submit').click(
+            function () {
+                var csrftoken = getCookie('csrftoken');
+
+                var class_name_arr = [];
+                var from_date_arr = [];
+                var to_date_arr = [];
+                var level_arr = [];
+
+                $('#input-here tr').each(
+                    function () {
+                        var class_name = $(this).find('#class_name');
+                        var from_date = $(this).find('#from_date');
+                        var to_date = $(this).find('#to_date');
+                        var level = $(this).find('#level');
+
+                        var good_to_go = true;
+
+                        if(!class_name.val()){
+                            good_to_go = false;
+                            class_name.parent('td').addClass('warning');
+                            alert("Thiếu tên lớp học.");
+                        }else {
+                            class_name.parent('td').removeClass('warning');
+                        };
+                        if(!from_date.val()){
+                            good_to_go = false;
+                            from_date.parent('td').addClass('warning');
+                            alert("Thiếu ngày bắt đầu.");
+                        }else{
+                            from_date.parent('td').removeClass('warning');
+                        };
+                        if(!to_date.val()){
+                            good_to_go = false;
+                            to_date.parent('td').addClass('warning');
+                            alert("Thiếu ngày kết thúc.");
+                        }else{
+                            to_date.parent('td').removeClass('warning');
+                        };
+                        if(to_date.val() < from_date.val()){
+                            good_to_go = false;
+                            alert("Ngày kết thúc phải bằng hoặc sau ngày bắt đầu.")
+                        };
+                        if(!level.val()){
+                            good_to_go = false;
+                            level.parent('td').addClass('warning');
+                            alert("Thiếu thông tin trình độ.");
+                        } else {
+                            level.parent('td').removeClass('warning');
+                        };
+
+                        if(good_to_go){
+                            class_name_arr.push(class_name.val());
+                            from_date_arr.push(from_date.val());
+                            to_date_arr.push(to_date.val());
+                            level_arr.push(level.val());
+                        }
+                    }
+                );
+                if(class_name_arr.length && from_date_arr.length && to_date_arr.length && level_arr.length){
+                    data = new Object();
+                    data.class_name = class_name_arr;
+                    data.from_date = from_date_arr;
+                    data.to_date = to_date_arr;
+                    data.level = level_arr;
+
+                    jsonString = JSON.stringify(data);
+                    $.ajax(
+                        {
+                            url: "{% url 'data_entry_save' %}",
+                            type: "POST",
+                            data: {
+                                'csrfmiddlewaretoken': csrftoken,
+                                'data': jsonString,
+                                'data_of': 'ClassInfo'
+                            },
+                            success: function () {
+                                $('#input-here').empty();
+                                addNewRow()
+                                alert("Dữ liệu đã được lưu thành công vào hệ thống.");
+                            },
+                            error: function () {
+                                alert("Đã có lỗi xảy ra, vui lòng liên hệ nhà quản trị.");
+                            }
+                        }
+                    );
+                }
+            }
+        );
     </script>
 {% endblock extra_js %}
