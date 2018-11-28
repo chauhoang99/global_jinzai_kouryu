@@ -3,13 +3,12 @@
 
 {% block content %}
     <div class="jumbotron">
-        <h3>Nhập dữ liệu về lớp học</h3>
+        <h3>Nhập dữ liệu về nhà tuyển dụng</h3>
         <table class="table">
             <thead>
-                <th>Tên lớp học</th>
-                <th>Từ ngày</th>
-                <th>Đến ngày</th>
-                <th>Trình độ</th>
+                <th>Tên công ty</th>
+                <th>Quốc gia</th>
+                <th>Địa chỉ văn phòng</th>
             </thead>
             <tbody id="input-here">
             </tbody>
@@ -43,19 +42,15 @@
     function addNewRow(){
         $('#input-here').append($('<tr>')
         .append($('<td>')
-            .append($('<input id="class_name" type="text">')
+            .append($('<input id="employer_name" type="text">')
             )
         )
         .append($('<td>')
-            .append($('<input id="from_date" type="date">')
+            .append($('<input id="country" type="date">')
             )
         )
         .append($('<td>')
-            .append($('<input id="to_date" type="date">')
-            )
-        )
-        .append($('<td>')
-            .append($('<input id="level" type="text">')
+            .append($('<input id="address" type="text">')
             )
         )
         .append($('<td>')
@@ -79,67 +74,55 @@
             function () {
                 var csrftoken = getCookie('csrftoken');
 
-                var class_name_arr = [];
-                var from_date_arr = [];
-                var to_date_arr = [];
-                var level_arr = [];
+                var employer_name_arr = [];
+                var country_arr = [];
+                var address_arr = [];
 
                 $('#input-here tr').each(
                     function () {
-                        var class_name = $(this).find('#class_name');
-                        var from_date = $(this).find('#from_date');
-                        var to_date = $(this).find('#to_date');
-                        var level = $(this).find('#level');
+                        var employer_name = $(this).find('#employer_name');
+                        var country = $(this).find('#country');
+                        var address = $(this).find('#address');
 
                         var good_to_go = true;
 
-                        if(!class_name.val()){
+                        if(!employer_name.val()){
                             good_to_go = false;
-                            class_name.parent('td').addClass('warning');
-                            alert("Thiếu tên lớp học.");
+                            employer_name.parent('td').addClass('warning');
+                            alert("Thiếu tên công ty.");
                         }else {
-                            class_name.parent('td').removeClass('warning');
+                            employer_name.parent('td').removeClass('warning');
                         };
-                        if(!from_date.val()){
+                        if(!country.val()){
                             good_to_go = false;
-                            from_date.parent('td').addClass('warning');
-                            alert("Thiếu ngày bắt đầu.");
+                            country.parent('td').addClass('warning');
+                            alert("Thiếu quốc gia.");
                         }else{
-                            from_date.parent('td').removeClass('warning');
+                            country.parent('td').removeClass('warning');
                         };
-                        if(!to_date.val()){
+                        if(!address.val()){
                             good_to_go = false;
-                            to_date.parent('td').addClass('warning');
-                            alert("Thiếu ngày kết thúc.");
-                        }else{
-                            to_date.parent('td').removeClass('warning');
-                        };
-                        if(to_date.val() < from_date.val()){
-                            good_to_go = false;
-                            alert("Ngày kết thúc phải bằng hoặc sau ngày bắt đầu.")
-                        };
-                        if(!level.val()){
-                            good_to_go = false;
-                            level.parent('td').addClass('warning');
-                            alert("Thiếu thông tin trình độ.");
+                            address.parent('td').addClass('warning');
+                            alert("Thiếu địa chỉ hiện tại.");
                         } else {
-                            level.parent('td').removeClass('warning');
+                            address.parent('td').removeClass('warning');
                         };
 
                         if(good_to_go){
-                            class_name_arr.push(class_name.val());
-                            from_date_arr.push(from_date.val());
-                            to_date_arr.push(to_date.val());
-                            level_arr.push(level.val());
+                            student_name_arr.push(student_name.val());
+                            date_of_birth_arr.push(date_of_birth.val());
+                            cmnd_arr.push(cmnd_arr.val());
+                            current_japanese_level_arr.push(current_japanese_level.val());
+                            address_arr.push(address.val());
                         }
                     }
                 );
-                if(class_name_arr.length && from_date_arr.length && to_date_arr.length && level_arr.length){
+
+                if(employer_name_arr.length && country_arr.length && address_arr.length){
                     data = new Object();
-                    data.class_name = class_name_arr;
-                    data.from_date = from_date_arr;
-                    data.to_date = to_date_arr;
-                    data.level = level_arr;
+                    data.employer_name = employer_name_arr;
+                    data.country = country_arr;
+                    data.address = address_arr;
 
                     jsonString = JSON.stringify(data);
                     $.ajax(
@@ -149,7 +132,7 @@
                             data: {
                                 'csrfmiddlewaretoken': csrftoken,
                                 'data': jsonString,
-                                'data_of': 'ClassInfo'
+                                'data_of': 'Employer'
                             },
                             success: function () {
                                 $('#input-here').empty();

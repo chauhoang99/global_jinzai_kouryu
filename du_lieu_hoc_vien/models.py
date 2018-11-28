@@ -41,6 +41,7 @@ class Teacher(models.Model):
     address = models.TextField(null=True)
     citizen_id = models.CharField(max_length=20, null=True)
     date_of_birth = models.DateField(null=True)
+    nationality = models.CharField(max_length=20, null=True)
     input_date = models.DateTimeField(auto_now=True)
     input_by = models.ForeignKey(to=User, related_name='teacher_input_by', on_delete=models.CASCADE)
     modified_date = models.DateTimeField(null=True)

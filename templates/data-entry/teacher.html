@@ -3,13 +3,14 @@
 
 {% block content %}
     <div class="jumbotron">
-        <h3>Nhập dữ liệu về lớp học</h3>
+        <h3>Nhập dữ liệu về giáo viên</h3>
         <table class="table">
             <thead>
-                <th>Tên lớp học</th>
-                <th>Từ ngày</th>
-                <th>Đến ngày</th>
-                <th>Trình độ</th>
+                <th>Tên giáo viên</th>
+                <th>Ngày sinh</th>
+                <th>CMND</th>
+                <th>Quốc tịch</th>
+                <th>Địa chỉ hiện tại</th>
             </thead>
             <tbody id="input-here">
             </tbody>
@@ -43,19 +44,23 @@
     function addNewRow(){
         $('#input-here').append($('<tr>')
         .append($('<td>')
-            .append($('<input id="class_name" type="text">')
+            .append($('<input id="teacher_name" type="text">')
             )
         )
         .append($('<td>')
-            .append($('<input id="from_date" type="date">')
+            .append($('<input id="date_of_birth" type="date">')
             )
         )
         .append($('<td>')
-            .append($('<input id="to_date" type="date">')
+            .append($('<input id="cmnd" type="text">')
             )
         )
         .append($('<td>')
-            .append($('<input id="level" type="text">')
+            .append($('<input id="nationality" type="text">')
+            )
+        )
+        .append($('<td>')
+            .append($('<input id="address" type="text">')
             )
         )
         .append($('<td>')
@@ -79,67 +84,75 @@
             function () {
                 var csrftoken = getCookie('csrftoken');
 
-                var class_name_arr = [];
-                var from_date_arr = [];
-                var to_date_arr = [];
-                var level_arr = [];
+                var teacher_name_arr = [];
+                var date_of_birth_arr = [];
+                var cmnd_arr = [];
+                var nationality_arr = [];
+                var address_arr = [];
 
                 $('#input-here tr').each(
                     function () {
-                        var class_name = $(this).find('#class_name');
-                        var from_date = $(this).find('#from_date');
-                        var to_date = $(this).find('#to_date');
-                        var level = $(this).find('#level');
+                        var teacher_name = $(this).find('#teacher_name');
+                        var date_of_birth = $(this).find('#date_of_birth');
+                        var cmnd = $(this).find('#cmnd');
+                        var nationality = $(this).find('#nationality');
+                        var address = $(this).find('#address');
 
                         var good_to_go = true;
 
-                        if(!class_name.val()){
+                        if(!teacher_name.val()){
                             good_to_go = false;
-                            class_name.parent('td').addClass('warning');
-                            alert("Thiếu tên lớp học.");
+                            teacher_name.parent('td').addClass('warning');
+                            alert("Thiếu tên giáo viên.");
                         }else {
-                            class_name.parent('td').removeClass('warning');
+                            teacher_name.parent('td').removeClass('warning');
                         };
-                        if(!from_date.val()){
+                        if(!date_of_birth.val()){
                             good_to_go = false;
-                            from_date.parent('td').addClass('warning');
-                            alert("Thiếu ngày bắt đầu.");
+                            date_of_birth.parent('td').addClass('warning');
+                            alert("Thiếu ngày sinh.");
                         }else{
-                            from_date.parent('td').removeClass('warning');
+                            date_of_birth.parent('td').removeClass('warning');
                         };
-                        if(!to_date.val()){
+                        if(!cmnd.val()){
                             good_to_go = false;
-                            to_date.parent('td').addClass('warning');
-                            alert("Thiếu ngày kết thúc.");
+                            cmnd.parent('td').addClass('warning');
+                            alert("Thiếu số cmnd.");
                         }else{
-                            to_date.parent('td').removeClass('warning');
+                            cmnd.parent('td').removeClass('warning');
                         };
-                        if(to_date.val() < from_date.val()){
+                        if(!nationality.val()){
                             good_to_go = false;
-                            alert("Ngày kết thúc phải bằng hoặc sau ngày bắt đầu.")
-                        };
-                        if(!level.val()){
-                            good_to_go = false;
-                            level.parent('td').addClass('warning');
-                            alert("Thiếu thông tin trình độ.");
+                            nationality.parent('td').addClass('warning');
+                            alert("Thiếu thông tin quốc tịch.");
                         } else {
-                            level.parent('td').removeClass('warning');
+                            nationality.parent('td').removeClass('warning');
+                        };
+                        if(!address.val()){
+                            good_to_go = false;
+                            address.parent('td').addClass('warning');
+                            alert("Thiếu địa chỉ hiện tại.");
+                        } else {
+                            address.parent('td').removeClass('warning');
                         };
 
                         if(good_to_go){
-                            class_name_arr.push(class_name.val());
-                            from_date_arr.push(from_date.val());
-                            to_date_arr.push(to_date.val());
-                            level_arr.push(level.val());
+                            teacher_name_arr.push(teacher_name.val());
+                            date_of_birth_arr.push(date_of_birth.val());
+                            cmnd_arr.push(cmnd_arr.val());
+                            nationality_arr.push(nationality.val());
+                            address_arr.push(address.val());
                         }
                     }
                 );
-                if(class_name_arr.length && from_date_arr.length && to_date_arr.length && level_arr.length){
+
+                if(teacher_name_arr.length && date_of_birth_arr.length && cmnd_arr.length && nationality_arr.length && address_arr.length){
                     data = new Object();
-                    data.class_name = class_name_arr;
-                    data.from_date = from_date_arr;
-                    data.to_date = to_date_arr;
-                    data.level = level_arr;
+                    data.teacher_name = teacher_name_arr;
+                    data.date_of_birth = date_of_birth_arr;
+                    data.cmnd = cmnd_arr;
+                    data.nationality = nationality_arr;
+                    data.address = address_arr;
 
                     jsonString = JSON.stringify(data);
                     $.ajax(
@@ -149,7 +162,7 @@
                             data: {
                                 'csrfmiddlewaretoken': csrftoken,
                                 'data': jsonString,
-                                'data_of': 'ClassInfo'
+                                'data_of': 'Teacher'
                             },
                             success: function () {
                                 $('#input-here').empty();
