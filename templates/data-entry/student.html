@@ -4,14 +4,10 @@
 {% block content %}
     <div class="jumbotron">
         <h3>Nhập dữ liệu về học viên</h3>
-        <table class="table">
-            <thead>
-                <th>Tên học viên</th>
-                <th>Ngày sinh</th>
-                <th>CMND</th>
-                <th>Trình độ Nhật ngữ</th>
-                <th>Địa chỉ hiện tại</th>
-            </thead>
+        <table class="table" id="table-main">
+            <col width="600">
+            <col width="600">
+            <col width="200">
             <tbody id="input-here">
             </tbody>
         </table>
@@ -41,39 +37,49 @@
       }
      return cookieValue;
     };
+
     function addNewRow(){
-        $('#input-here').append($('<tr>')
-        .append($('<td>')
-            .append($('<input id="student_name" type="text">')
+        $('#input-here')
+            .append($('<tr>')
+                .append($('<td id="student-info">')
+                    .append($('<tr><td>Tên học viên: </td><td><input id="student_name" type="text"></td>')
+                    )
+                    .append($('<tr><td>Ngày sinh: </td><td><input id="date_of_birth" type="date"></td>')
+                    )
+                    .append($('<tr><td>CMND: </td><td><input id="cmnd" type="text"></td>')
+                    )
+                    .append($('<tr><td>Trình độ Nhật ngữ: </td><td><input id="current_japanese_level" type="text"></td>')
+                    )
+                    .append($('<tr><td>Địa chỉ hiện tại: </td><td><input id="address" type="text"></td>')
+                    )
+                )
+                .append($('<td id="degree-info">')
+                    .append($('<button class="glyphicon glyphicon-plus" type="button" onClick="addDegree($(this))">Thêm bằng cấp</button>')
+                    )
+                )
+                .append($('<td>')
+                    .append($('<button class="glyphicon glyphicon-minus" type="button" onClick="$(this).closest(\'tr\').remove();">')
+                    )
+                )
             )
-        )
-        .append($('<td>')
-            .append($('<input id="date_of_birth" type="date">')
-            )
-        )
-        .append($('<td>')
-            .append($('<input id="cmnd" type="text">')
-            )
-        )
-        .append($('<td>')
-            .append($('<input id="current_japanese_level" type="text">')
-            )
-        )
-        .append($('<td>')
-            .append($('<input id="address" type="text">')
-            )
-        )
-        .append($('<td>')
-            .append($('<button class="glyphicon glyphicon-minus" type="button" onClick="$(this).closest(\'tr\').remove();">'))
-        )
-    );
     };
+
+    function addDegree(this_row){
+        alert("clicked");
+    };
+
         $(document).ready(addNewRow());
 
         $('#btn-add-row').click(
             function () {
                 addNewRow()
             });
+
+        {#$('#btn-add-degree').click(#}
+        {#    function () {#}
+        {#        addDegree()#}
+        {#    }#}
+        {#);#}
 
         $('#btn-reset').click(
             function () {
