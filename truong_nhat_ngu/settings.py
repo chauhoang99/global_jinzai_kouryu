@@ -77,13 +77,13 @@ WSGI_APPLICATION = 'truong_nhat_ngu.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "global_jinzai_kouryu",
-        'USER': "root",
-        'PASSWORD': "root",
-        'HOST': "localhost",
-        'PORT': 3306,
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'study',
+        'USER': 'hoangchau',
+        'PASSWORD': 'truuue',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    },
 }
 
 
